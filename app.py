@@ -12,8 +12,21 @@ from datetime import datetime
 # Defini o campo para Título usando streamlit
 st.set_page_config(page_title="Formulário de Reembolso", layout="centered")
 st.title("Voucher - Reembolso de Despesas")
+ # Definindo as linhas tracejadas para divisão de assuntos
+st.markdown(
+    """
+    <style>.dashed-line{
 
-# Campo para definir os Dados do Solicitante
+        border-top:2px dashed #aaa;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        }
+    <style>
+    """,
+    unsafe_allow_html=True,
+    )
+    
+ #Campo para definir os Dados do Solicitante
 st.subheader("Dados do Polo")
 razao_social = st.text_input("Razão Social")
 cnpj = st.text_input("CNPJ")
@@ -49,26 +62,29 @@ if enviar:
     if not razao_social or not cnpj or not evento:
         st.error("Por favor, preencha todos os campos obrigatórios (nome, CPF e evento).")
     else:
-        # Criar PDF
+        # Aqui foi criado para o arquivo em PDF, porém agora preciso alterar para o excel, pois o layout precisa ficar igual o usual
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", size=12)
 
-        # Cabeçalho
+        # Aqui você faz a definição do cabeçalho do seu PDF
         pdf.cell(200, 10, txt="Solicitação de Reembolso", ln=True, align="C")
-        pdf.ln(10)
+        pdf.ln(10),
+        st.markdown("---") # Definindo as linhas tracejadas para divisão de assuntos
 
         # Dados Pessoais
         pdf.cell(200, 10, txt=f"Razao_social: {razao_social}", ln=True)
         pdf.cell(200, 10, txt=f"CNPJ: {cnpj}", ln=True)
         pdf.cell(200, 10, txt=f"Banco: {banco} Numero_Banco: {numero_banco} Agência: {agencia}  Conta: {conta}", ln=True)
         pdf.ln(6)
+        st.markdown("---") # Definindo as linhas tracejadas para divisão de assuntos
 
         # Evento
         pdf.cell(200, 10, txt=f"Evento: {evento}", ln=True)
         pdf.cell(200, 10, txt=f"Data: {data_evento.strftime('%d/%m/%Y')}", ln=True)
         pdf.cell(200, 10, txt=f"Local: {local}", ln=True)
         pdf.ln(5)
+        st.markdown("---") # Definindo as linhas tracejadas para divisão de assuntos
 
         # Despesas
         pdf.cell(200, 10, txt="Despesas:", ln=True)
@@ -78,8 +94,9 @@ if enviar:
                 pdf.cell(200, 10, txt=f"{i}. {desc} - R$ {val:.2f}", ln=True)
                 total += val
         pdf.cell(200, 10, txt=f"Total: R$ {total:.2f}", ln=True)
+        st.markdown("---") # Definindo as linhas tracejadas para divisão de assuntos
 
-        # Salvar PDF
+        # Nesse argumento serve para salvar PDF
         pasta_saida = "envios"
         os.makedirs(pasta_saida, exist_ok=True)
         data_str = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -88,7 +105,7 @@ if enviar:
          # Aqui você vai definir o e-mail que receberá o formulario para preencher
         try:
             remetente = "eduardo.cruzsilva1972@gmail.com"
-            destinatario = "eduardo.correa@unimar.br"  
+            destinatario = "lucasneves@unimar.br"  
 
             msg = EmailMessage()
             msg["Subject"] = "Nova Solicitação de Reembolso"
