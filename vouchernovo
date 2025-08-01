@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Voucher de Reembolso</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .btn { margin-top: 20px; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; }
+        .btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <h2>Formulário de Voucher de Reembolso</h2>
+    <form action="processa.php" method="post" enctype="multipart/form-data">
+        <label>Nome:</label>
+        <input type="text" name="nome" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Setor:</label>
+        <input type="text" name="setor" required>
+
+        <label>Data:</label>
+        <input type="date" name="data" required>
+
+        <h3>Itens de Despesa</h3>
+        <table>
+            <tr><th>Item</th><th>Quantidade</th><th>Unitário</th><th>Total</th></tr>
+            <?php for($i=0; $i<5; $i++): ?>
+            <tr>
+                <td><input type="text" name="produto[]"></td>
+                <td><input type="number" name="quantidade[]"></td>
+                <td><input type="text" name="unitario[]"></td>
+                <td><input type="text" name="total[]"></td>
+            </tr>
+            <?php endfor; ?>
+        </table>
+
+        <label>Valor Total:</label>
+        <input type="text" name="valor_total" required>
+
+        <label>Anexar Comprovantes (PDF):</label>
+        <input type="file" name="comprovantes[]" multiple>
+
+        <button type="submit" class="btn">Enviar</button>
+    </form>
+</body>
+</html>
